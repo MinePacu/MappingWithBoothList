@@ -78,6 +78,9 @@ for i in range(2, len(boothNumber_list)):
 printDebug("boothNumber_List", boothNumber_list)
 printDebug("boothNumber_list_completed", boothNumber_list_completed)
 
+index = 0
 for boothnumber in boothNumber_list_completed:
+	index += 1
+	print(f"부스 번호 {boothnumber} 작업 중..... [{index} / {len(boothNumber_list_completed)}]")
 	SetLinkToMap(boothlist_Sheet, BoothMapSheet, boothnumber)
 	time.sleep(2)

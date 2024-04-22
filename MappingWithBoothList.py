@@ -29,12 +29,13 @@ def SetLinkToMap(BoothListSheet: gspread.Worksheet, BoothMapSheet: gspread.Works
 	for Number in BoothNumber_splited:
 		temp = Number.replace(' ', '\n') if checkSpecialBooth(Number) == True else Number
 		MapLocationData = BoothMapSheet.find(temp)
+		BoothNameData = BoothListSheet.get(f'C{BoothNumberCell_Data.row}')
 		BoothLocations.append(rowcol_to_a1(MapLocationData.row, MapLocationData.col))
 
 		map_value = f'TEXTJOIN(CHAR(10), 0, "{Number.split(" ")[0]}", "{Number.split(" ")[1]}")' if checkSpecialBooth(Number) == True else f'"{Number}"'
 			
 		BoothMapSheet.update_acell(rowcol_to_a1(MapLocationData.row, MapLocationData.col),
-						  		f'=HYPERLINK("#gid={BoothListSheet.id}&range={rowcol_to_a1(BoothNumberCell_Data.row, BoothNumberCell_Data.col)}", {map_value})')
+						  		f'=HYPERLINK(CONCATENATE("#gid={BoothListSheet.id}&range=B", MATCH("{BoothNameData[0][0]}", \'{BoothListSheet.title}\'!C:C, 0)), {map_value})')
 
 	BoothListSheet.update_acell(rowcol_to_a1(BoothNumberCell_Data.row, BoothNumberCell_Data.col),
 						  		f'=HYPERLINK("#gid={BoothMapSheet.id}&range={BoothLocations[0]}:{BoothLocations[len(BoothLocations) - 1]}", "{BoothNumber}")')
@@ -45,7 +46,7 @@ def printDebug(tag: str, vari: any):
 gc : gspread.client.Client = None
 sheet : gspread.spreadsheet.Spreadsheet = None
 
-sheetId = "1TzNBg9FTmXkrpBtpxdBiI5hNdJn76NPgtMkmGAwYinM"
+sheetId = "1TmZxEkJW17d0I1MmfNyzIIxjh1n_en1DKrwsbk2OzjM"
 sheetNumber = 0
 MapSheetNumber = 6
 
@@ -78,9 +79,11 @@ for i in range(2, len(boothNumber_list)):
 printDebug("boothNumber_List", boothNumber_list)
 printDebug("boothNumber_list_completed", boothNumber_list_completed)
 
-index = 0
-for boothnumber in boothNumber_list_completed:
+continue_value = 0
+index = continue_value
+for j in range(continue_value, len(boothNumber_list_completed)):
 	index += 1
-	print(f"부스 번호 {boothnumber} 작업 중..... [{index} / {len(boothNumber_list_completed)}]")
-	SetLinkToMap(boothlist_Sheet, BoothMapSheet, boothnumber)
-	time.sleep(2)
+	log = boothNumber_list_completed[j].replace("\n", " ")
+	print(f"부스 번호 {log} 작업 중..... [{index} / {len(boothNumber_list_completed)}]")
+	SetLinkToMap(boothlist_Sheet, BoothMapSheet, boothNumber_list_completed[j])
+	time.sleep(3)

@@ -33,9 +33,9 @@ def SetLinkToMap(BoothListSheet: gspread.Worksheet, BoothMapSheet: gspread.Works
 		BoothLocations.append(rowcol_to_a1(MapLocationData.row, MapLocationData.col))
 
 		map_value = f'TEXTJOIN(CHAR(10), 0, "{Number.split(" ")[0]}", "{Number.split(" ")[1]}")' if checkSpecialBooth(Number) == True else f'"{Number}"'
+		function_str = f'=HYPERLINK(CONCATENATE("#gid={BoothListSheet.id}&range=B", MATCH("{BoothNameData[0][0]}", \'{BoothListSheet.title}\'!C:C, 0), ":I", MATCH("{BoothNameData[0][0]}", \'{BoothListSheet.title}\'!C:C, 0)), {map_value})'
 			
-		BoothMapSheet.update_acell(rowcol_to_a1(MapLocationData.row, MapLocationData.col),
-						  		f'=HYPERLINK(CONCATENATE("#gid={BoothListSheet.id}&range=B", MATCH("{BoothNameData[0][0]}", \'{BoothListSheet.title}\'!C:C, 0)), {map_value})')
+		BoothMapSheet.update_acell(rowcol_to_a1(MapLocationData.row, MapLocationData.col), function_str)
 
 	BoothListSheet.update_acell(rowcol_to_a1(BoothNumberCell_Data.row, BoothNumberCell_Data.col),
 						  		f'=HYPERLINK("#gid={BoothMapSheet.id}&range={BoothLocations[0]}:{BoothLocations[len(BoothLocations) - 1]}", "{BoothNumber}")')

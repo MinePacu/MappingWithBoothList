@@ -81,9 +81,10 @@ printDebug("boothNumber_list_completed", boothNumber_list_completed)
 
 continue_value = 0
 index = continue_value
-for j in range(continue_value, len(boothNumber_list_completed)):
+finish_index = len(boothNumber_list_completed)
+for j in range(continue_value, finish_index):
 	index += 1
 	log = boothNumber_list_completed[j].replace("\n", " ")
-	print(f"부스 번호 {log} 작업 중..... [{index} / {len(boothNumber_list_completed)}]")
+	print(f"부스 번호 {log} 작업 중..... [{index} / {finish_index - continue_value}]")
 	SetLinkToMap(boothlist_Sheet, BoothMapSheet, boothNumber_list_completed[j])
 	time.sleep(3)
